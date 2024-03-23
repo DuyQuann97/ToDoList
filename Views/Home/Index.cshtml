@@ -1,0 +1,136 @@
+﻿@model IEnumerable<ToDoList.Models.ToDoTask.ToDoTaskViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<header >
+    <!-- Title Name -->
+    <h1>To Do List</h1>
+    <!-- Button 'Add Task' -->
+    <div class="d-flex justify-content-end">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add To Do Task
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thêm Nhiệm Vụ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/Home/AddTask" method="post">
+                            <!-- Task name -->
+                            <div class="mb-3">
+                                <label for="taskName" class="form-label">Task Name</label>
+                                <input type="text" class="form-control" id="taskName" name="taskName" placeholder="Study English, etc..">
+                            </div>
+                            <!-- Day Start and Day End -->
+                            <div class="d-flex justify-content-between">
+                                <div class="mb-3">
+                                    <label for="taksStart" class="form-label">Start Day</label>
+                                    <input type="date" class="form-control" id="taksStart" name="taskStart">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="taksEnd" class="form-label">End Day</label>
+                                    <input type="date" class="form-control" id="taksEnd" name="taskEnd">
+                                </div>
+                            </div>
+
+                            <!-- Status Task -->
+                            <select class="form-select" aria-label="Default select example" id="taskStatus" name="taskStatus">
+                                <option selected>Status</option>
+                                <option value="1">Completed</option>
+                                <option value="2">Processing</option>
+                                <option value="3">Cancel</option>
+                            </select>
+
+                            <!-- Description Task -->
+                            <div class="mb-3">
+                                <label for="taskDesc" class="form-label">Description</label>
+                                <textarea class="form-control" id="taskDesc" name="taskDesc" rows="3"></textarea>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<hr/>
+<content class="d-flex">
+    <aside class="p-2 w-40 bd-highlight">
+        <div class="">
+            <h4 class="">Task List</h4>
+            <div>
+                <div class="form-check">
+                    <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label link-primary" for="flexRadioDefault1">
+                        All Task
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label link-success" for="flexRadioDefault2">
+                        Completed
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label link-warning" for="flexRadioDefault3">
+                        Processing
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5">
+                    <label class="form-check-label link-danger" for="flexRadioDefault5">
+                        Cancel
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+    </aside>
+
+    <article class="p-2 w-60 bd-highlight container">
+        <div class="row row-cols-4">
+            @if (Model.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+
+                    <div class="col">
+                        <div class="card text-white @(item.Status == "1" ? "bg-success" : (item.Status == "2" ? "bg-warning" : "bg-danger")) mb-3" style="max-width: 18rem;" id="@item.Id">
+                            <div class="card-header">@item.Name</div>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.StartDay - @item.EndDay</h5>
+                                <p class="card-text">@item.Description</p>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-danger m-2">Remove</button>
+                                    <button type="button" class="btn btn-warning m-2">Update</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+            else
+            {
+                <h1 class="text-center">No Task Yet</h1>
+            }
+        </div>
+        
+    </article>
+</content>
